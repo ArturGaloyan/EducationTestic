@@ -1,0 +1,180 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<link rel="stylesheet" href="~/css/Student/Finish.css" />
+
+<div id="finish-container">
+    <div class="chempions">
+        <h1 class="h1">{{ls.tr('testingResult')}}</h1>
+    </div>
+    @*<div v-if="student !== null">
+            <div v-if="questions.length > 0">
+                <div v-for="q in questions">
+                    {{q.question}}
+                    <span v-if="q.answer > -1">
+                        {{q.answers[q.answer].value}}
+                    </span>
+                    <span v-else>patasxan chi gtnvel</span>
+                    {{q.isTrue ? q.point : 0}}
+                </div>
+            </div>
+        </div>*@
+
+    <!-- clasic akardion in html css  -->
+    <div v-if="student !== null">
+
+        <div v-if="questions.length > 0" class="faq">
+            <label class="faq-title">
+                <span>{{student.studentName}}</span> <span>{{student.studentSurname}} </span> <span>{{student.studentFatherName}} </span>
+            </label>
+            <div v-if="!!answers && answers.length == 0" class="faq-text">
+                <b>{{ls.tr('youHaveNoResult')}}</b>
+            </div>
+            <div v-else class="faq-text">
+                <table class="edu-table" border=1 cellspacing=0 cellpadding=10>
+                    <tr>
+                        <th>{{ls.tr('true')}}</th>
+                        <th>{{ls.tr('false')}}</th>
+                        <th>{{ls.tr('none')}}</th>
+                        <th>{{ls.tr('points')}}</th>
+                        <th>{{ls.tr('maxPoints')}}</th>
+                        <th>{{ls.tr('assessment')}}</th>
+                    </tr>
+                    <tr>
+                        <td class="true">{{trueAnswers}}</td>
+                        <td class="false">{{falseAnswers}}</td>
+                        <td class="none">{{noneAnswers}}</td>
+                        <td>{{points}}</td>
+                        <td>{{fullPoints}}</td>
+                        <td>{{result}}</td>
+                    </tr>
+                </table>
+                <br>
+                <table class="edu-table" border=1 cellspacing=0 cellpadding=10>
+                    <tr>
+                        <th>#</th>
+                        <th>{{ls.tr('questions')}}</th>
+                        <th>{{ls.tr('answers')}}</th>
+                        <th>{{ls.tr('isTrue')}}</th>
+                        <th>{{ls.tr('points')}}</th>
+                    </tr>
+                    <tr v-for="(q, akey) in questions">
+                        <td>{{akey + 1}}</td>
+                        <td>{{q.question}}</td>
+                        <td v-if="q.answer > -1">{{q.answers[q.answer].value}}</td>
+                        <td v-else></td>
+                        <td class="true" v-if="q.isTrue == true">{{ls.tr('true')}}</td>
+                        <td v-if="q.isTrue == false && q.answer > -1" class="false">{{ls.tr('false')}}</td>
+                        <td v-if="q.isTrue == false && q.answer < 0" class="none">{{ls.tr('none')}}</td>
+                        <td>{{q.isTrue ? q.point : 0}}</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+    let app = new Vue({
+        el: "#finish-container",
+        data: {
+            testingID: null,
+            questions: [],
+            answers: [],
+            student: null,
+            points: null,
+            fullPoints: null,
+            result: null,
+            trueAnswers: null,
+            falseAnswers: null,
+            noneAnswers: null,
+            ls: langStore,
+        },
+        methods: {
+            //calculatePoints: function () {
+            //    let points = 0;
+            //    let fullPoints = 0;
+            //    this.questions.forEach((item, index) => {
+            //        fullPoints += item.point;
+            //        if (item.isTrue) {
+            //            points += item.point;
+            //        }
+            //    });
+            //    this.points = points;
+            //    this.fullPoints = fullPoints;
+            //    this.result = points * 10 / fullPoints;
+            //},
+            //calculateTrues: function () {
+            //    const result = this.questions.filter(item => !!item.isTrue);
+            //    this.trueAnswers = result.length;
+            //},
+            //calculateFalses: function () {
+            //    const result = this.questions.filter(item => (!item.isTrue && item.answer > -1));
+            //    this.falseAnswers = result.length;
+            //},
+            //calculateNones: function () {
+            //    const result = this.questions.filter(item => (!item.isTrue && item.answer < 0));
+            //    this.noneAnswers = result.length;
+            //},
+            getAnswer: function (question) {
+                let answer = this.answers.find((a) => { return a.questionID == question.id });
+                if (answer != null) {
+                    return { isTrue: answer.isTrue, selected: answer.answer }
+                }
+
+                return { isTrue: false, selected: -1 } // ete answer chka massivum
+            }
+        },
+        created: function () {
+            this.testingID = window.location.pathname.split('/')[3];
+
+            axios({
+                method: 'get',
+                url: '/Student/GetFinishResult',
+                params: {
+                    testingID: this.testingID,
+                }
+            }).then((r) => {
+                console.log(r.data);
+                this.answers = r.data.dataAnswers;
+                this.questions = r.data.dataQuestions.map((q) => {
+                    let answer = this.getAnswer(q);
+
+                    return {
+                        id: q.id,
+                        question: q.question,
+                        trueAnswer: q.trueAnswer,
+                        timer: q.timer,
+                        point: q.point,
+                        answers: [
+                            { value: q.answer1 },
+                            { value: q.answer2 },
+                            { value: q.answer3 },
+                            { value: q.answer4 }
+                        ],
+                        isTrue: answer.isTrue,
+                        answer: answer.selected
+                    };
+                });
+
+                this.student = r.data.student;
+
+
+                this.points = r.data.result.resultPoint;
+                this.fullPoints = r.data.result.maxPoint;
+                this.result = this.points * 10 / this.fullPoints; // tvanshan
+                this.trueAnswers = r.data.result.isTrueCount;
+                this.falseAnswers = r.data.result.isFalseCount;
+                this.noneAnswers = r.data.result.isNoneCount;
+                // stex petq e veragrel haxtoxneri anunnery;
+            })
+        }
+
+    })
+</script>

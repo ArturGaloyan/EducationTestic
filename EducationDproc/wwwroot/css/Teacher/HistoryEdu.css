@@ -1,0 +1,142 @@
+﻿body {
+}
+
+
+/*body {
+    background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}*/
+
+body {
+    background-image: linear-gradient(rgb(154 166 227 / 80%),rgba(0,0,100,0.75)), url(/img/bg.jpg);
+}
+
+.NewEducationEmpti {
+    background-color: rgb(122 184 255 / 70%);
+    height: 160px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 25px;
+    color: white;
+    /*color: rgb(223, 190, 245);*/
+    /* border-radius: 20px;*/
+}
+
+.h2 {
+    text-align: center;
+    /*color: rgb(223, 190, 245);*/
+    font-size: 25px;
+}
+
+.h1 {
+    text-align: center;
+    /*color: rgb(223, 190, 245);*/
+}
+
+.edu-container {
+    /*display: flex;
+    justify-content: center;*/
+    margin-top: 80px;
+}
+
+
+.containerSelection {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* margin-top: 200px;*/
+    /* margin-left:  50%;*/
+    text-align: center;
+    /*border-radius: 30px;*/
+    /* background: rgba(249, 247, 250, 0.2);*/
+}
+
+.edu-sel {
+    width: 250px;
+    /*height: 40%;*/
+    margin-right: 15px;
+}
+
+.edu-select {
+    width: 100%;
+    height: 60px;
+    margin-top: 0;
+    /* border-radius: 10px;*/
+    background-color: rgb(122 184 255 / 70%);
+    color: white;
+    font-size: 20px;
+}
+
+    .edu-select:hover {
+        height: 60px;
+        font-size: 23px;
+        background-color: rgb(122 184 255 / 85%);
+    }
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    height: 80px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.button {
+    height: 90%;
+    width: 40%;
+    margin-top: 0.9%;
+    margin-right: 0.5%;
+    border-radius: 30px;
+    font-size: 18px;
+    text-align: center;
+}
+
+    .button.new {
+        background: rgb(97, 161, 245, 0.45);
+        color: white;
+        width: 100px;
+        height: 60px;
+        margin: 0;
+    }
+
+
+/*
+#button-new {
+  color: red;
+}
+
+#button-new:hover {
+    color: yellow;
+}*/
+
+
+
+.buttons .new:hover {
+    background: rgba(128, 181, 250, 0.75);
+    box-shadow: 0 0 30px 10px rgba(97, 161, 245, 0.25);
+}
+
+.buttons .data {
+    background: rgba(155, 255, 40, 0.45);
+    color: white;
+    margin-left: 10%;
+}
+
+    .buttons .data:hover {
+        background: rgba(155, 255, 40, 0.55);
+        box-shadow: 0 0 30px 10px rgba(173, 250, 190, 0.2);
+    }

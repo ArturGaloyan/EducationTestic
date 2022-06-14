@@ -1,0 +1,316 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<link rel="stylesheet" href="~/css/Teacher/MyClass.css" />
+
+
+<div class="edu-container" id="TeacherMyClass">
+
+    <div class="NewEducationEmpti h-auto py-3" v-for="cl in classes">
+        <h1 class="h1 h-auto py-5">
+
+            {{ls.tr('classTeacherSubject')}}&nbsp;
+            <br />
+            <br />
+            <span>{{ls.tr('class')}} &nbsp;{{cl.classNumber}}</span>
+            <span>{{cl.classGroup}}</span>
+
+        </h1> <!--&nbsp sa tuyl e talis prabel dnel "html simbols" ejic e vercvac-->      
+    </div>
+
+    <!-- modal kanchelu button -->
+    <div class="containerFirstModal">
+
+        <h1 class="firstModal" v-if="teacherSubject.length == 0">Ararkai hamar Usucich chi grancvel</h1>
+
+        <div class="button-container">
+            <button class="button add" v-on:click="openClassModal()">{{ls.tr('add')}}</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="classModal" tabindex="-3" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: fit-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    @*<h5 class="modal-title" id="exampleModalLabel" v-if="classTeacherSubject.id == null">{{ls.tr('addClass')}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel" v-else>{{ls.tr('editClass')}}</h5>*@
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="containerSelection d-flex align-items-center">
+
+                        <!--Select Teacher-->
+                        <div class="edu-sel containerTeacher">
+                            <select class="edu-select" name="teacherID" v-model="classTeacherSubject.teacherID">
+                                <option selected disabled hidden>{{ls.tr('selectTeacher')}}</option>
+                                <option v-for="t in teachers" v-bind:value="t.id">{{t.name}} {{t.surname}} </option>
+                            </select>
+                        </div>
+
+                        <!--Select Subject-->
+                        <div class="edu-sel containerTeacher">
+                            <select class="edu-select" name="subjectID" v-model="classTeacherSubject.subjectID">
+                                <option selected disabled hidden>{{ls.tr('selectSubject')}}</option>
+                                <option v-for="s in classSubjects" v-bind:value="s.id">{{s}}</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ls.tr('close')}}</button>
+                    <button type="button" class="btn btn-primary" v-on:click="saveTeacherSubject()">{{ ls.tr('save') }}</button>
+                    @*<button type="button" class="btn btn-primary" v-on:click="saveClass()" v-bind:disabled="isSaveDisabled()">{{ classTeacherSubject.id == null ? ls.tr('save') : ls.tr('update') }}</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="edu-select-teacher d-flex justify-content-between align-items-center px-3" name="" v-for="tr in teacherSubject">
+            <span v-bind:value="tr.id">{{tr.teacher.name}} {{tr.teacher.surname}}</span>
+            <span v-bind:value="tr.id">{{tr.subject}}</span>
+            <span>
+                <button class="p-2 bd-highlight btn btn-warning" v-on:click="edidTeacherSubject(tr.id)">{{ls.tr('change')}}</button>
+                <button class="p-2 bd-highlight btn btn-danger" v-on:click="deleteTeacherSubject(tr.id)">{{ls.tr('delete')}}</button>
+            </span>
+        </div>
+    </div>
+
+</div>
+<script src="~/js/subjects.js" asp-append-version="true"></script> @*// stanal dproci bolor ararkaner@@ sharac @@st dasaranneri*@
+<script src="~/js/classGroups.js" asp-append-version="true"></script>
+<script>
+
+    // nor edu lracnelu vuejs n e;
+
+    var app = new Vue({
+        el: "#TeacherMyClass",
+        data: {
+
+            classes: [],
+            classSubjects: [],
+
+            teachers: [],
+            teacherSubject: [],
+
+            classNumber: '',
+            classGroup: '',
+
+            classTeacherSubject: {
+                id: null,
+                classesID: '',
+                subjectID: '',
+                teacherID: '',
+                schoolID: '',
+            },
+           
+            sharedState: langStore.state,
+            ls: langStore,
+        },
+        methods: {
+            goToFinishPage: function (testingID) {
+                document.location = `/Teacher/Finish/${testingID}`;
+            },
+
+            saveTeacherSubject: function () {
+
+                if (this.classTeacherSubject.id == null) {
+                    // insert ClassTeacherSubject
+                    axios({
+                        method: 'post',
+                        url: '/Teacher/AddClassTeacherSubject',
+                        params: {
+                            classesID: this.classes.id,
+                            subjectID: this.classTeacherSubject.subjectID,
+                            teacherID: this.classTeacherSubject.teacherID,
+                        },
+                    }).then((r) => {
+                        console.log(r.data + "addClassTeacherSubject - n ;;;");
+                        //let cl = r.data;
+                        //let tch = this.teachers.find((t) => { return t.id = cl.teacherID });
+                        //cl.teacher = { ...tch };
+                        //this.classes.push(cl);
+                        this.sortClasses();
+                        this.closeModal();
+                    });
+                } else {
+                    // updateClass
+                    axios({
+                        method: 'post',
+                        url: '/Teacher/UpdateTeacherSubject',
+                        params: { ...this.classTeacherSubject },
+                    }).then((r) => {
+                        console.log(r.data);
+
+                        let i = this.classes.findIndex((item) => { return item.id == r.data.id });
+
+                        if (i > -1) {
+                            let tch = this.teachers.find((t) => { return t.id = r.data.teacherID });
+
+                            this.classes[i] = { ...r.data };
+
+                            this.classes[i].teacher = { ...tch };
+                            this.sortClasses();
+
+                        }
+
+                        this.closeModal();
+                    });
+                }
+
+            },
+
+            setDefaultModal: function () {
+                this.classTeacherSubject = {
+                    id: null,
+                    classesID: '',
+                    subjectID: '',
+                    teacherID: '',
+                    schoolID: '',
+                };
+            },
+
+            openClassModal: function () {
+                this.setDefaultModal();
+                $('#classModal').modal('show');
+            },
+
+            edidTeacherSubject: function (teacherSubjectId) {
+                let tr = this.classes.find((item) => { return item.id == teacherSubjectId });
+                if (!!tr) {
+                    this.classTeacherSubject = { ...tr };
+                    $('#classModal').modal('show');
+                } else {
+                    alert('selected class not found');
+                }
+
+            },
+
+            deleteTeacherSubject: function (classId) {
+                let cl = this.classes.find((item) => { return item.id == classId });
+                let confirmed = confirm(this.ls.tr('classDeleteConfirm').replace('%classNumber%', cl.classNumber).replace('%classGroup%', cl.classGroup));
+                //let confirmed = confirm(`Are you sure to delete ${cl.classNumber} ${cl.classGroup} class`);
+
+                if (confirmed) {
+                    if (!!cl) {
+                        axios({
+                            method: 'post',
+                            url: '/Teacher/DeleteTeacherSubject',
+                            params: { ...cl },
+                        }).then((r) => {
+                            console.log(r.data);
+
+                            let i = this.classes.findIndex((item) => { return item.id == r.data.id });
+
+
+                            if (i > -1) {
+                                this.classes.splice(i, 1);
+
+                                this.sortClasses();
+                            }
+
+                            this.closeModal();
+                        });
+                    }
+                }
+
+            },
+
+            sortClasses: function () {
+                this.classes.sort((a, b) => {
+                    if (Number(a.classNumber) < Number(b.classNumber)) {
+                        return -1;
+                    }
+                    if (Number(a.classNumber) > Number(b.classNumber)) {
+                        return 1;
+                    }
+
+                    if (a.classGroup < b.classGroup) {
+                        return -1;
+                    }
+
+                    if (a.classGroup > b.classGroup) {
+                        return 1;
+                    }
+
+                    return 0;
+                })
+            },
+
+            closeModal: function () {
+                $('#classModal').modal('hide');
+                this.setDefaultModal();
+            },
+
+            isSaveDisabled: function () {
+
+                if (this.classTeacherSubject.teacherID == null) {
+                    return true;
+                }
+
+                if (this.classTeacherSubject.subjectID == '') {
+                    return true;
+                }
+
+                return false;
+            }
+
+        },
+
+        async created() {
+            axios({
+                method: 'post',
+                url: '/Teacher/GetClassesInfo',
+            }).then((r) => {
+                console.log(r);
+                console.log(r.data);
+                this.teachers = [...r.data.teachers];
+                this.classSubjects = [...r.data.subjects];
+                this.teacherSubject = [...r.data.teachersSubjects];
+
+                this.classes = [...r.data.classes];
+                
+
+
+                this.teachers.sort((a, b) => {
+                    if (a.surname < b.surname) {
+                        return -1;
+                    }
+                    if (a.surname > b.surname) {
+                        return 1;
+                    }
+
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+
+                    return 0;
+                })
+
+                this.classes = r.data.classes.map((cl) => {
+                    let c = { ...cl };
+
+                    let tch = r.data.teachers.find((t) => { return t.id = cl.teacherID });
+
+                    c.teacher = { ...tch };
+
+                    return c;
+                });
+                this.sortClasses();
+            });
+        }
+
+    });
+
+</script>

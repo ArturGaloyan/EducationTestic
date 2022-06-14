@@ -1,0 +1,237 @@
+﻿
+/* {
+    margin: 0;
+    padding: 0;
+}*/
+
+
+
+/*body {*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);*/
+    /*  background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/bg.jpg');*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla1.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla3.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla4.jpg');*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla5.jpg');*/
+    /*background-repeat: no-repeat;
+    background-position: center 30%;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}*/
+
+
+body {
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);*/
+    /*  background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/bg.jpg');*/
+   /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alex1.jpg');*/ /*Alex*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla3.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla4.jpg');*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla5.jpg');*/
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+body {
+    background-image: linear-gradient(rgb(154 166 227 / 80%),rgba(0,0,100,0.75)), url(/img/bg.jpg);
+}
+
+
+.edu-container {
+    /* yntanur guynn e */
+    width: 100%;
+    height: 100vh;
+    font-family: sans-serif;
+    /*background: rgb(187,187,245);*/
+    color: #fff;
+    /* flexov berum e centron */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);*/
+
+  /*  background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;*/
+}
+
+/* laynutyun barcrutyun ev tapancikutyunn e */
+.edu-card {
+    width: 350px;
+    height: 500px;
+    box-shadow: 0 0 30px 25px rgba(253, 253, 253, 0.1);
+    perspective: 1000px;
+    background-color: rgba(212, 167, 255, 0.4);
+}
+
+.inner-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    padding: 55px;
+    box-sizing: border-box;
+    backface-visibility: hidden;
+}
+
+    .card-front .h2 {
+        text-align: center;
+    }
+
+    .card-front .input-box {
+        margin-top: 10px;
+    }
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.card-back {
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.h2 {
+    font-size: xx-large;
+    color: rgba(252, 252, 252, 0.7);
+   /* margin-bottom: 40px;*/
+}
+
+.input-box {
+    width: 100%;
+    /*background: transparent;*/
+    background-color: rgb(179, 106, 252, 0.6);
+    border: 1px solid #fff;
+    margin: 6px 0;
+    height: 32px;
+    border-radius: 20px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    outline: none;
+    text-align: center;
+    color: #fff;
+}
+
+    .input-box::-webkit-input-placeholder {
+        color: white;
+        font-size: large;
+    }
+
+::placeholder {
+    color: #fff;
+    font-size: 12px;
+}
+
+.buttons {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #fff;
+    margin: 0 auto;
+    height: 32px;
+    font-size: 12px;
+    border-radius: 20px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.submit-btn {
+    position: relative;
+    /*width: 100px;*/
+    /*margin-left: 70px;*/
+    margin-top: 50px;
+    margin-bottom: 40px;
+    background: rgba(155, 255, 40, 0.4);
+    color: white;
+    font-size: large;
+}
+
+    .submit-btn:hover {
+        background: rgba(155, 255, 40, 0.6);
+        box-shadow: 0 0 30px 10px rgba(173, 250, 190, 0.2);
+    }
+
+.edu-container .edu-card .inner-box .card-back > .forma .submit-btn {
+    margin-left: 0px;
+    margin-bottom: 20px;  /*80 er poxel em */
+}
+
+    .edu-container .edu-card .inner-box .card-back > .forma .submit-btn:hover {
+        background: rgba(155, 255, 40, 0.6);
+        box-shadow: 0 0 30px 10px rgba(173, 250, 190, 0.2);
+    }
+
+.edu-container .edu-card .inner-box .card-back .edu-btn {
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.edu-btn {
+    background: rgb(97, 161, 245, 0.4);
+    color: white;
+    font-size: large;
+   /* width: 150px;
+    margin-left: 43px;*/
+}
+
+    .edu-btn:hover {
+        background: rgba(115, 174, 252, 0.7);
+        box-shadow: 0 0 30px 10px rgba(97, 161, 245, 0.25);
+    }
+
+.edu-card .card-back .edu-btn {
+    margin-top: 50px;
+}
+
+#stug {
+    padding-top: 20px;
+}
+
+.edu-card .card-back .submit-btn {
+    margin-top: 30px;
+}
+
+.edu-card a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+
+.edu-card .card-front .edu-btn {
+    margin-top: 40px;
+}
+
+
+
+

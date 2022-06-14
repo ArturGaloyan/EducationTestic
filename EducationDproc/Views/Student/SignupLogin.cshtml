@@ -1,0 +1,124 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<link rel="stylesheet" href="~/css/StartEdu.css" />
+<link rel="stylesheet" href="~/css/Student/SignupLogin.css" />
+
+<div id="app">
+
+
+    <div class="edu-container" id="edu-container">
+
+        @if (TempData["Namak"] != null)
+        {
+        <p class="namak" style="color:red">{{ls.tr('@TempData["Namak"]')}}</p>
+        }
+
+        <div class="edu-card">
+            <div class="inner-box" id="card">
+
+                <div class="card-front">
+
+                    <h2 class="h2">{{ls.tr('studentLogin')}}</h2>
+                    <form class="forma" action="/Student/Mutqagrel" method="post">
+
+                        <input name="email" type="email" class="input-box"
+                                v-bind:placeholder="ls.tr('email')" required>
+
+                        <input name="password" type="password" class="input-box"
+                               v-bind:placeholder="ls.tr('password')" required>
+
+
+                        <button id="front" type="submit" class="buttons submit-btn">{{ls.tr('login')}}</button>
+
+                    </form>
+
+                    <!--
+                     <button type="button" class="btn" v-on:click="openRegister">Go to register</button>
+                     -->
+                    <button type="button" class="buttons edu-btn"  v-on:click="openRegister()">{{ls.tr('goToRegister')}}</button>
+
+
+
+                </div>
+
+
+
+                <div class="card-back">
+
+
+                    <h2 class="h2">{{ls.tr('studentSignup')}}</h2>
+
+                    <form class="forma" action="/Student/Grancvel" method="post">
+
+                        <input name="name" type="text" class="input-box"
+                               v-bind:placeholder="ls.tr('name')" required>
+
+                        <input name="surname" type="text" class="input-box"
+                               v-bind:placeholder="ls.tr('surname')" required>
+
+                        <input name="fatherName" type="text" class="input-box"
+                               v-bind:placeholder="ls.tr('fatherName')" required>
+
+
+                        <input name="email" type="email" class="input-box" v-bind:placeholder="ls.tr('email')" required
+                               v-model="text">
+
+                        <input name="password" type="password" class="input-box"
+                               v-bind:placeholder="ls.tr('password')" required>
+
+                        <button type="submit" class="buttons submit-btn">{{ls.tr('submit')}}</button>
+
+                    </form>
+
+                    <button type="button" class="buttons edu-btn"  v-on:click="openLogin()">{{ls.tr('goToLogin')}}</button>
+                    <p id="stug" class="text-danger">{{ls.tr(error)}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    new Vue({
+        el: "#edu-container",
+        data: {
+            text: "",
+            error: "",
+            ls: langStore,
+        },
+        methods: {
+
+            log_stug: function () {
+                axios.get("/Student/Stugel/" + this.text)
+                    .then(r => {
+                        if (r.data == 0) {
+                            this.error = "";
+                        } else {
+                            this.error = "loginExists";
+                        }
+
+                    })
+            },
+            openRegister: function () {
+                let card = document.getElementById("card");
+                let front = document.getElementById("front");
+                card.style.transform = "rotateY(-180deg)";
+                front.style.display = "none";
+            },
+            openLogin: function () {
+                let card = document.getElementById("card");
+                let front = document.getElementById("front");
+                card.style.transform = "rotateY(0deg)";
+                front.style.display = "inline-block";
+            }
+        }
+
+    })
+
+</script>

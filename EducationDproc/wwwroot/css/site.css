@@ -1,0 +1,68 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+* {
+    margin: 0;
+   /* padding: 0;*/
+    box-sizing: border-box;
+}
+body {
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);*/
+    /*  background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/bg.jpg');*/
+    background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alex1.jpg');*/ /*Alex*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla3.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla4.jpg');*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla5.jpg');*/
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+main {
+    min-height: calc(100vh - 99px );
+}
+
+.btn-pink {
+    background-color: rgba(247, 246, 248, 0.25);
+    border-color: rgba(247, 246, 248, 0.25);
+}
+
+
+.logo img {
+    max-height: 60px;
+}
+.logo b {
+    font-family: cursive;
+    font-size: 38px;
+    line-height: 1;
+}
+.logo b:nth-child(1) {
+    color: #e25858;
+}
+
+.logo b:nth-child(2) {
+    color: #e364d3;
+}
+
+.logo b:nth-child(3) {
+    color: #7a9dc3;
+}
+
+.logo b:nth-child(4) {
+    color: #5bbaa2;
+}
+
+.logo b:nth-child(5) {
+    color: #a7b58a;
+}
+
+.logo b:nth-child(6) {
+    color: #efcf2c;
+}

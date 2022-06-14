@@ -1,0 +1,154 @@
+﻿main {
+    max-height: calc(100vh - 199px );
+}
+
+
+.edu-container {
+    /* yntanur guynn e */
+    width: 100%;
+    height: 100vh;
+    font-family: sans-serif;
+    /* background: rgb(187,187,245);*/
+    color: #fff;
+    /* flexov berum e centron */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* laynutyun barcrutyun ev tapancikutyunn e */
+
+.edu-card {
+    width: 600px;
+    height: 880px;
+    /* box-shadow: 0 0 40px 20px rgba(0,0,0,0.26);*/
+    perspective: 1000px;
+    border-radius: 10px;
+}
+
+.h3 {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.inner-box {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    border-radius: 20px;
+
+    text-align: center;
+    font-size: 40px;
+    color: rgb(238, 226, 243);
+    margin-top: 20px;
+    font-family: arial;
+    width: 100%;
+    height: auto;
+    background: rgba(220, 162, 247, 0.3);
+}
+
+
+
+#rendBox {
+    width: 250px;
+    margin-left: 30%;
+    border-radius: 33px;
+    margin-bottom: 15px;
+}
+
+
+#All-password {
+    color: white;
+    font-size: 40px;
+    background: rgba(188, 122, 255, 0.35);
+    display: inline-block;
+    width: 250px;
+    /* height: 50px; */
+    text-align: center;
+    border-radius: 33px;
+    padding: 10px;
+    line-height: 1;
+}
+
+.edu-select {
+    border-radius: 10px;
+    background-color: rgba(188, 122, 255, 0.7);
+    color: white;
+    /*font-size: 20px;*/
+    padding: 5px 10px;
+}
+
+#timeDown {
+    color: rgb(253, 253, 24, 0.8);
+    text-align: center;
+    font-size: 30px;
+}
+
+.question {
+    background-color: rgba(247, 246, 248, 0.25);
+    margin: 30px;
+    height: 150px;
+    border-radius: 30px;
+    text-align: center;
+    font-size: 30px;
+}
+
+
+
+.answer-bloc {
+    /*background: rgb(32, 116, 185);*/
+    margin: 30px;
+    height: 200px;
+}
+
+.answers {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100%;
+}
+
+.answer-item {
+    width: 250px;
+    height: 40%;
+    margin: 10px;
+    border-radius: 30px;
+    background-color: rgba(188, 122, 255, 0.6);
+    color: white;
+    font-size: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ok {
+    background: rgba(68, 228, 193, 0.4);
+    width: 200px;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-left: 160px;
+    margin-top: 40px;
+    font-size: 30px;
+    border-radius: 30px;
+}
+
+    .ok:hover {
+        background: rgba(128, 181, 250, 0.75);
+        box-shadow: 0 0 30px 10px rgba(97, 161, 245, 0.25);
+    }
+
+.next {
+    background: rgba(155, 255, 40, 0.4);
+    color: white;
+    width: 200px;
+    text-align: center;
+    padding: 10px;
+    margin: 40px auto 0;
+    display: block;
+    font-size: 30px;
+    border-radius: 30px;
+}
+
+    .next:hover {
+        background: rgba(155, 255, 40, 0.55);
+        box-shadow: 0 0 30px 10px rgba(173, 250, 190, 0.2);
+    }

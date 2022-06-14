@@ -1,0 +1,329 @@
+﻿
+@model IEnumerable<ExcelQuestion>
+
+
+<link rel="stylesheet" href="~/css/Teacher/NewEdu.css" />
+
+<div class="edu-container" id="TeacherNewEducation">
+    <div class="edu-headding">
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    {{ls.tr('excelQuestionInstruction')}}<br /> <br />
+
+                    {{ls.tr('excelQuestion').replace('%letter%', 'A')}}<br />
+
+                    {{ls.tr('excelAnswer').replace('%letter%', 'B').replace('%ansNo%', '1').replace('%ansVal%', '30') }}<br />
+                    {{ls.tr('excelAnswer').replace('%letter%', 'C').replace('%ansNo%', '2').replace('%ansVal%', '20') }}<br />
+                    {{ls.tr('excelAnswer').replace('%letter%', 'D').replace('%ansNo%', '3').replace('%ansVal%', '25') }}<br />
+                    {{ls.tr('excelAnswer').replace('%letter%', 'E').replace('%ansNo%', '4').replace('%ansVal%', '55') }}<br />
+
+                    {{ls.tr('excelTrueAnswer').replace('%letter%', 'F').replace('%trueAns%', '2').replace('%ansVal%', '20')}}<br />
+
+                    {{ls.tr('excelPoint').replace('%letter%', 'G').replace('%point%', '4').replace('%pointVal%', '4')}}<br />
+                    {{ls.tr('excelTimer').replace('%letter%', 'H').replace('%minut%', '1').replace('%minutVal%', '1')}}<br />
+
+                    @*<input type="file" name="file" />*@
+                    <input type="file" id="file" ref="file" v-on:change="handleFileUpload" accept=".xls, .xlsx" />
+
+                    @*<button type="button" class="btn btn-primary">Upload</button>*@
+                    <button v-on:click="submitFile()">Submit</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-left">
+
+        <div class="sticky-block">
+            <div class="NewEducationEmpti">
+                <h1 class="h1" name="teacherName">{{ls.tr('teacherName')}}</h1>
+                <br>
+                <h3 class="h3">{{ls.tr('teacherNewEducation')}}</h3>
+            </div>
+
+
+            @*  *@
+            <div class="containerSelection">
+                <!--Select Class-->
+                <div class="edu-sel containerClass">
+                    <select class="edu-select" name="classNumber" id="OptSelectClass" v-model="classNumber">
+                        <option value="" disabled>{{ls.tr('selectClass')}}</option>
+                        <option value="1">{{ls.tr('class')}} 1</option>
+                        <option value="2">{{ls.tr('class')}} 2</option>
+                        <option value="3">{{ls.tr('class')}} 3</option>
+                        <option value="4">{{ls.tr('class')}} 4</option>
+                        <option value="5">{{ls.tr('class')}} 5</option>
+                        <option value="6">{{ls.tr('class')}} 6</option>
+                        <option value="7">{{ls.tr('class')}} 7</option>
+                        <option value="8">{{ls.tr('class')}} 8</option>
+                        <option value="9">{{ls.tr('class')}} 9</option>
+                        <option value="10">{{ls.tr('class')}} 10</option>
+                        <option value="11">{{ls.tr('class')}} 11</option>
+                        <option value="12">{{ls.tr('class')}} 12</option>
+                    </select>
+                </div>
+                <!--Select Item-->
+                <div class="edu-sel containerItem">
+                    <!-- v-model="classItem"-->
+                    <select class="edu-select" name="itemName" id="OptSelectItem" v-model="subjectID">
+                        <option value="" disabled>{{ls.tr('selectItem')}}</option>
+                        <option v-for="s in classSubjects.find((item) => { return item.classNumber == classNumber })?.subjects" v-bind:value="s.id">{{s.name}}</option>
+                    </select>
+                </div>
+                <!--Select Paragraph-->
+                <div class="edu-sel containerParagraph">
+                    <!--v-model="classParagraph"-->
+                    <input type="text" class="edu-select" v-model="paragraph" v-bind:placeholder="ls.tr('paragraphName')" />
+                </div>
+                <!--Selection-->
+            </div>
+        </div>
+
+    </div>
+    <div class="sidebar-right">
+        <div class="questionAndAnswersBoxesContainer">
+            <div class="questionAndAnswersBox" v-for="(question, key) in questions">
+                <h6 class="h6" name="questionNumber">{{key + 1}}</h6>
+                <button v-on:click="addQuestionBefore(key)">+</button>
+                <button v-on:click="deleteQuestion(key)">&times;</button>
+                <!--question input form-->
+                <div class="scoreboard">
+                    <input class="edu-input question" type="text" v-model="question.question" v-bind:placeholder="ls.tr('question')" name="question">
+                    @if (TempData["Namak"] != null)
+                    {
+                        <p class="namak" style="color:red">{{ls.tr('@TempData["Namak"]')}}</p>
+                    }
+                </div>
+
+                <div class="answers">
+                    <div class="answer" v-for="(answer, j) in question.answers">
+                        <label class="edu-label">
+                            <input class="edu-input" v-model="question.trueAnswer" type="radio"
+                                   v-bind:value="j" v-bind:name="'trueAnswer' + key"> {{ls.tr('true')}}
+                        </label>
+                        <input class="edu-input" type="text" v-model="answer.value">
+                    </div>
+                </div>
+                <div class="selections-container mt-4">
+                    <label class="edu-sel containerTimer text-white d-flex align-items-center justify-content-center">
+                        {{ls.tr('selectTimer')}}
+                        <select class="edu-select text-center w-auto ml-4 mt-0" v-model="question.timer" name="timer">
+                            <option value="60">1</option>
+                            <option value="120">2</option>
+                            <option value="180">3</option>
+                            <option value="240">4</option>
+                            <option value="300">5</option>
+                            <option value="360">6</option>
+                            <option value="420">7</option>
+                            <option value="480">8</option>
+                            <option value="540">9</option>
+                            <option value="600">10</option>
+                        </select>
+                    </label>
+                    <label class="edu-sel containerPoints text-white d-flex align-items-center justify-content-center">
+                        {{ls.tr('selectPoint')}}
+                        <select class="edu-select text-center w-auto ml-4 mt-0" v-model="question.point" name="point">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--buttons-->
+    <div class="buttons">
+        <button class="button btn btn-info" type="button" data-toggle="modal" data-target="#exampleModal">{{ls.tr('addFromExcel')}}</button>
+        <button class="button add" v-on:click="addQuestion()">{{ls.tr('add')}}</button>
+        <button class="button save" v-on:click="saveTestEdu()">{{ls.tr('save')}}</button>
+        @*<button class="button start" v-on:click="startTestEdu()">Start</button>*@
+    </div>
+
+</div>
+<!--container-->
+<script src="~/js/subjects.js" asp-append-version="true"></script> @*// stanal dproci bolor ararkaner@@ sharac @@st dasaranneri*@
+<script>
+
+    // nor edu lracnelu vuejs n e;
+
+    var app = new Vue({
+        el: "#TeacherNewEducation",
+        data: {
+            classSubjects: subjects.classSubjects, //
+            classNumber: '',
+            subjectID: '',
+            paragraph: '',
+            questions: [
+                {
+                    question: "",
+                    trueAnswer: null,
+                    timer: 60,
+                    point: 1,
+                    answers: [
+                        { value: "" },
+                        { value: "" },
+                        { value: "" },
+                        { value: "" }
+                    ]
+                }
+            ],
+            ls: langStore, // translation
+           
+            file: null,
+        },
+        methods: {
+            addQuestion: function () {
+                let newQuestion = {
+                    question: "",
+                    trueAnswer: null,
+                    timer: 0,
+                    point: 1,
+                    answers: [
+                        { value: "" },
+                        { value: "" },
+                        { value: "" },
+                        { value: "" }
+                    ]
+                };
+                this.questions.push(newQuestion);
+            },
+            addQuestionBefore: function (key) {
+                let newQuestion = {
+                    question: "",
+                    trueAnswer: null,
+                    timer: 0,
+                    point: 1,
+                    answers: [
+                        { value: "" },
+                        { value: "" },
+                        { value: "" },
+                        { value: "" }
+                    ]
+                };
+                this.questions.splice(key, 0, newQuestion);
+            },
+            deleteQuestion: function (key) {
+                this.questions.splice(key, 1);
+            },
+            saveTestEdu: function () {
+
+                axios({
+                    method: 'post',
+                    url: '/Teacher/CreateTestEdu',
+                    params: {
+                        classNumber: this.classNumber,
+                        subjectID: this.subjectID,
+                        paragraph: this.paragraph,
+                    }
+                }).then((r) => {
+                    console.log(r, r.data);
+                    let questions = this.questions.map((item, index) => {
+                        let nItem = {
+                            timer: item.timer,
+                            point: item.point,
+                            question: item.question,
+                            answer1: item.answers[0].value,
+                            answer2: item.answers[1].value,
+                            answer3: item.answers[2].value,
+                            answer4: item.answers[3].value,
+                            trueAnswer: item.trueAnswer,
+                            testEduID: r.data.id,
+                            order: index,
+                        }
+                        return nItem;
+                    });
+                    questions.forEach((item) => {
+                        axios({
+                            method: 'post',
+                            url: '/Teacher/CreateQuestion',
+                            params: item
+                        });
+                    });
+                    document.location = `/Teacher/EditEdu/${r.data.id}`;
+                });
+            },
+            // Get Excel Data
+            submitFile: function () {
+                let item = this;
+                if (!!item.file) {
+                    let formData = new FormData();
+                    formData.append('file', this.file, this.file.name);
+                    console.log(formData);
+                    axios.post('/Excel/GetExcelData/',
+                        formData,
+                        {
+                            onUploadProgress: ProgressEvent => {
+                                console.log('in progress');
+                            },
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }
+                    ).then(function (res) {
+                        console.log('SUCCESS!!', res.data);
+                        let questions = res.data.excel_question.map((q) => {
+                            return {
+                                question: q.question,
+                                trueAnswer: q.trueAnswer - 1,
+                                timer: q.timer * 60,
+                                point: q.point,
+                                answers: [
+                                    { value: q.answer1 },
+                                    { value: q.answer2 },
+                                    { value: q.answer3 },
+                                    { value: q.answer4 }
+                                ]
+                            };
+                        });
+                        console.log(questions);
+                        item.questions = questions;
+                        $('#exampleModal').modal('hide');
+                        item.file = null;
+                        $('input[type="file"]').val('');
+
+
+                    }).catch(function (err) {
+                        console.log('FAILURE!!', err);
+                    });
+                } else {
+                    alert('File not selected');
+                }
+            },
+            handleFileUpload: function (e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+                console.log(files);
+                this.file = files[0];
+            },
+           
+        },
+
+        async created() {
+        }
+
+    });
+
+</script>
+

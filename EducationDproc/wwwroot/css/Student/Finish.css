@@ -1,0 +1,124 @@
+﻿
+body {
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);*/
+    /*  background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/bg.jpg');*/
+    background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../../img/Alla5.jpg');
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla3.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla4.jpg');*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla5.jpg');*/
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+main {
+    min-height: calc(100vh - 99px );
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chempions {
+    background-color: rgba(218, 132, 252, 0.3);
+    height: 100%;
+    padding: 5px;
+    margin: 20px;
+    border-radius: 20px;
+}
+
+.h2 {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 25px;
+    text-shadow: 0 0 6px #e6c5c5, 0 0 6px #adadeb;
+}
+
+.h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ecdffc;
+    text-shadow: 0 0 3px #f8f0f0, 0 0 5px #5a5af7;
+}
+
+/* akardion */
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.faq {
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.faq-item {
+    margin-bottom: 5px;
+    border: 1px solid #e6c5c5
+}
+
+.faq-title {
+    display: block;
+    padding: 10px 15px;
+    color: white;
+}
+
+
+.faq-text {
+    padding: 10px 15px;
+    color: white;
+    font-size: 14px;
+}
+
+
+p {
+    margin: 0 0 5px;
+}
+
+
+
+.edu-table {
+    border: 1 solid rgb(189, 47, 255);
+    background-color: rgba(255, 255, 255, 0.17);
+}
+
+.true {
+    /*
+     background: rgb(205, 248, 139);
+    color: rgb(148, 3, 192);
+   */
+    background: rgba(122, 245, 97, 0.4);
+    color: white;
+    text-align: center;
+    font-size: x-large;
+}
+
+.false {
+    /*
+    background: rgb(255, 151, 151);
+    color: rgb(148, 3, 192);
+    */
+    background: rgba(245, 97, 97, 0.4);
+    color: white;
+    text-align: center;
+    font-size: x-large;
+}
+
+
+.none {
+    background: rgb(97, 161, 245, 0.4);
+    color: white;
+    text-align: center;
+    font-size: x-large;
+}
+
+
+
+
+
+

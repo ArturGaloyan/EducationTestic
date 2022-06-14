@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EducationDproc</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!--Sa Animate.css i link e -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+</head>
+<body>
+    <header>
+        @*<partial name="/Views/Shared/_Menu.cshtml" />*@
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container">
+                <span class="logo">
+                    <b>T</b>
+                    <b>E</b>
+                    <b>S</b>
+                    <b>T</b>
+                    <b>I</b>
+                    <b>C</b>
+                </span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse d-none collapse d-sm-inline-flex" id="headerMenu" v-bind:class="{'d-flex': menuType !== null}">
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">{{ls.tr('home')}}</a>
+                        </li>
+                        @* not logged in menu *@
+                        <li class="nav-item" v-if="menuType=='notLoggedIn'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Student" asp-action="SignupLogin">{{ls.tr('student')}}</a>
+                        </li>
+                        <li class="nav-item" v-if="menuType=='notLoggedIn'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Teacher" asp-action="SignupLogin">{{ls.tr('teacher')}}</a>
+                        </li>
+                        <li class="nav-item" v-if="menuType=='notLoggedIn'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Director" asp-action="SignupLogin">{{ls.tr('director')}}</a>
+                        </li>
+
+                        @* student menu *@
+                        <li class="nav-item" v-if="menuType=='student'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Student" asp-action="Edu">{{ls.tr('joinTest')}}</a>
+                        </li>
+                        <li class="nav-item" v-if="menuType=='student'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Student" asp-action="HistoryEdu">{{ls.tr('testHistory')}}</a> @*href="#history"*@
+                        </li>
+
+                        @* Teacher menu *@
+                        <li class="nav-item" v-if="menuType=='teacher'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Teacher" asp-action="SelectEdu">{{ls.tr('selectTest')}}</a>
+                        </li>
+                        <li class="nav-item" v-if="menuType=='teacher'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Teacher" asp-action="HistoryEdu">{{ls.tr('testHistory')}}</a>
+                        </li>
+                        <li class="nav-item" v-if="menuType=='teacher' && hasClass==1">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Teacher" asp-action="MyClass">{{ls.tr('myClass')}}</a>
+                        </li>
+
+                        @* director menu *@
+                        <li class="nav-item" v-if="menuType=='director'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Director" asp-action="HistoryEdu">{{ls.tr('testHistory')}}</a>
+                        </li>
+                        <li class="nav-item" v-if="menuType=='director'">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Director" asp-action="SchoolClasses">{{ls.tr('schoolClasses')}}</a>
+                        </li>
+
+                    </ul>
+                    <div class="d-none" v-bind:class="{'d-flex': menuType !== null}">
+                        <button v-on:click="logout()" v-if="menuType!='notLoggedIn'" class="btn btn-sm btn-info mr-3">{{ls.tr('logout')}}</button>
+                    </div>
+
+                </div>
+                <div id="langSwitcher" class="d-flex">
+                    <button class="btn btn-sm" v-bind:class="[{'btn-primary' : langState.lang == 'en'}, {'btn-light': langState.lang != 'en'}]" v-on:click="setActiveLang('en')">ENG</button>
+                    <button class="btn ml-1 btn-sm" v-bind:class="[{'btn-primary' : langState.lang == 'am'}, {'btn-light': langState.lang != 'am'}]" v-on:click="setActiveLang('am')">ՀԱՅ</button>
+                    <button class="btn ml-1 btn-sm" v-bind:class="[{'btn-primary' : langState.lang == 'ru'}, {'btn-light': langState.lang != 'ru'}]" v-on:click="setActiveLang('ru')">РУС</button>
+                </div>
+            </div>
+        </nav>
+        <script src="~/js/translation.js"></script>
+        <script src="~/js/menu.js" asp-append-version="true"></script>
+
+    </header>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-white">
+                    Developed by <a href="mailto:test@mail.ru" class="text-white">test@mail.ru</a> <a href="tel:055261138" class="text-white">055261138</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @RenderSection("Scripts", required: false)
+
+
+
+
+
+    @*originaln e*@
+
+    @*<header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EducationDproc</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2021 - EducationDproc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)*@
+</body>
+</html>

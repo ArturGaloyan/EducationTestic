@@ -1,0 +1,302 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<link rel="stylesheet" href="~/css/Teacher/EditEdu.css" />
+
+<div class="edu-container" id="TeacherEduList">
+
+    <div class="edu-headding"></div>
+
+    <div class="sidebar-left">
+
+        <div class="sticky-block">
+            <div class="NewEducationEmpti">
+                <h1 class="h1" name="teacherName">{{ls.tr('teacherName')}}</h1>
+                <br>
+                <h3 class="h3">{{ls.tr('teacherEditEducation')}}</h3>
+            </div>
+
+
+            @*  *@
+            <div class="containerSelection">
+                <!--Select Class-->
+                <div class="edu-sel containerClass">
+                    <select class="edu-select" name="classNumber" id="OptSelectClass" v-model="classNumber" v-bind:disabled="isEduStarted == 1">
+                        <option value="" disabled>{{ls.tr('selectClass')}}</option>
+                        <option value="1">{{ls.tr('class')}} 1</option>
+                        <option value="2">{{ls.tr('class')}} 2</option>
+                        <option value="3">{{ls.tr('class')}} 3</option>
+                        <option value="4">{{ls.tr('class')}} 4</option>
+                        <option value="5">{{ls.tr('class')}} 5</option>
+                        <option value="6">{{ls.tr('class')}} 6</option>
+                        <option value="7">{{ls.tr('class')}} 7</option>
+                        <option value="8">{{ls.tr('class')}} 8</option>
+                        <option value="9">{{ls.tr('class')}} 9</option>
+                        <option value="10">{{ls.tr('class')}} 10</option>
+                        <option value="11">{{ls.tr('class')}} 11</option>
+                        <option value="12">{{ls.tr('class')}} 12</option>
+                    </select>
+                </div>
+                <!--Select Item-->
+                <div class="edu-sel containerItem">
+                    <!-- v-model="classItem"-->
+                    <select class="edu-select" name="itemName" id="OptSelectItem" v-model="subjectID" v-bind:disabled="isEduStarted == 1">
+                        <option value="" disabled>{{ls.tr('selectItem')}}</option>
+                        <option v-for="s in classSubjects.find((item) => { return item.classNumber == classNumber })?.subjects" v-bind:value="s.id">{{s.name}}</option>
+                    </select>
+                </div>
+                <!--Select Paragraph-->
+                <div class="edu-sel containerParagraph">
+                    <!--v-model="classParagraph"-->
+                    <input type="text" class="edu-select" v-model="paragraph" v-bind:placeholder="ls.tr('paragraphName')" v-bind:disabled="isEduStarted == 1" />
+                </div>
+                <!--Selection-->
+            </div>
+        </div>
+
+    </div>
+    <div class="sidebar-right">
+        <div class="questionAndAnswersBoxesContainer">
+            <div class="questionAndAnswersBox" v-for="(question, key) in questions">
+                <h6 class="h6" name="questionNumber">{{key + 1}}</h6>
+                <button v-on:click="addQuestionBefore(key)" v-bind:disabled="isEduStarted == 1">+</button>
+                <button v-on:click="deleteQuestion(key)" v-bind:disabled="isEduStarted == 1">&times;</button>
+                <!--question input form-->
+                <div class="scoreboard">
+                    <input class="edu-input question" type="text" v-model="question.question" v-bind:placeholder="ls.tr('question')" name="question" v-bind:disabled="isEduStarted == 1">
+                    @if (TempData["Namak"] != null)
+                    {
+                        <p class="namak" style="color:red">@TempData["Namak"]</p>
+                    }
+                </div>
+
+                <div class="answers">
+                    <div class="answer" v-for="(answer, j) in question.answers">
+                        <label class="edu-label">
+                            <input class="edu-input" v-model="question.trueAnswer" type="radio"
+                                   v-bind:value="j" v-bind:name="'trueAnswer' + key" v-bind:disabled="isEduStarted == 1">{{ls.tr('true')}}
+                        </label>
+                        <input class="edu-input" type="text" v-model="answer.value" v-bind:disabled="isEduStarted == 1">
+                    </div>
+                </div>
+                <div class="selections-container">
+                    <div class="edu-sel containerTimer">
+                        <select class="edu-select" v-model="question.timer" name="timer" v-bind:disabled="isEduStarted == 1">
+                            <option value="0">{{ls.tr('selectTimer')}}</option>
+                            <option value="60">1</option>
+                            <option value="120">2</option>
+                            <option value="180">3</option>
+                            <option value="240">4</option>
+                            <option value="300">5</option>
+                            <option value="360">6</option>
+                            <option value="420">7</option>
+                            <option value="480">8</option>
+                            <option value="540">9</option>
+                            <option value="600">10</option>
+                        </select>
+                    </div>
+                    <div class="edu-sel containerPoints">
+                        <select class="edu-select" v-model="question.point" name="point" v-bind:disabled="isEduStarted == 1">
+                            <option value="0">{{ls.tr('selectPoint')}}</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--buttons-->
+    <div class="buttons">
+        <button v-if="isEduStarted == 0" class="button add" v-on:click="addQuestion()">{{ls.tr('add')}}</button>
+        <button v-if="isEduStarted == 0" class="button save" v-on:click="saveTestEdu()">{{ls.tr('save')}}</button>
+        <button class="button start" v-on:click="startTestEdu()">{{ls.tr('start')}}</button>
+    </div>
+
+</div>
+<!--container-->
+
+<script src="~/js/subjects.js" asp-append-version="true"></script> @*// stanal dproci bolor ararkaner@@ sharac @@st dasaranneri*@
+<script>
+
+    // nor edu lracnelu vuejs n e;
+
+    var app = new Vue({
+        el: "#TeacherEduList",
+        data: {
+            classSubjects: subjects.classSubjects, //
+            isEduStarted: 0,
+            id: null,
+            classNumber: '',
+            subjectID: '',
+            paragraph: '',
+            teacherID: null,
+            questions: [
+
+            ],
+            sharedState: langStore.state,
+            ls: langStore,
+        },
+        methods: {
+            selectAnswer: function () {
+
+            },
+            addQuestion: function () {
+                let newQuestion = {
+                    question: "",
+                    trueAnswer: null,
+                    timer: 0,
+                    point: 1,
+                    answers: [
+                        { value: "" },
+                        { value: "" },
+                        { value: "" },
+                        { value: "" }
+                    ]
+                };
+                this.questions.push(newQuestion);
+            },
+            addQuestionBefore: function (key) {
+                let newQuestion = {
+                    question: "",
+                    trueAnswer: null,
+                    timer: 0,
+                    point: 1,
+                    answers: [
+                        { value: "" },
+                        { value: "" },
+                        { value: "" },
+                        { value: "" }
+                    ]
+                };
+                this.questions.splice(key, 0, newQuestion);
+            },
+            saveTestEdu: function () {
+                axios({
+                    method: 'post',
+                    url: '/Teacher/UpdateTestEdu',
+                    params: {
+                        id: this.id,
+                        classNumber: this.classNumber,
+                        subjectID: this.subjectID,
+                        paragraph: this.paragraph,
+                        teacherID: this.teacherID,
+                    }
+                }).then((r) => {
+                    console.log(r, r.data);
+                    let questions = this.questions.map((item, index) => {
+                        let nItem = {
+                            timer: item.timer,
+                            point: item.point,
+                            question: item.question,
+                            answer1: item.answers[0].value,
+                            answer2: item.answers[1].value,
+                            answer3: item.answers[2].value,
+                            answer4: item.answers[3].value,
+                            trueAnswer: item.trueAnswer,
+                            testEduID: this.id,
+                            order: index,
+                        }
+                        return nItem;
+                    });
+                    questions.forEach((item) => {
+                        axios({
+                            method: 'post',
+                            url: '/Teacher/CreateQuestion',
+                            params: item
+                        });
+                    });
+                });
+
+            },
+            deleteQuestion: function (key) {
+                this.questions.splice(key, 1);
+            },
+            startTestEdu: function () {
+                axios({
+                    method: 'get',
+                    url: '/Teacher/CreateTestEduPassword',
+                    params: {
+                        id: this.id
+                    }
+                }).then((response) => {
+                    console.log(response.data);
+                    document.location = `/Teacher/Edu/${response.data.testingID}`;
+                });
+            }
+        },
+
+        async created() {
+            //stugum e ogtagorvac linely
+            //axios({
+            //    method: 'get',
+            //    url: '/StudentsEduList/EsEduStarted',
+            //}).then((r) => {
+            //    this.isEduStarted = r.data.isEduStarted;
+            //});
+
+
+            this.id = window.location.pathname.split('/')[3];
+            if (!!this.id) {
+                //select testedu
+                console.log(this.id);
+                axios({
+                    method: 'post',
+                    url: '/Teacher/getTestEdu',
+                    params: {
+                        id: this.id,
+                    }
+                }).then((r) => {
+                    console.log(r, r.data);
+                    if (r.data == 'not logge in') {
+                        document.location = '/Teacher/SignupLogin';
+                    } else {
+
+                        if (r.data.testEdus.length > 0) {
+
+                            this.isEduStarted = r.data.isEduUsed;// ardyoq ogtagorcvac e te voch?
+
+                            this.classNumber = r.data.testEdus[0].classNumber;
+                            this.subjectID = r.data.testEdus[0].subjectID;
+                            this.paragraph = r.data.testEdus[0].paragraph;
+                            this.teacherID = r.data.testEdus[0].teacherID;
+
+
+                            this.questions = r.data.questions.map((q) => {
+                                return {
+                                    question: q.question,
+                                    trueAnswer: q.trueAnswer,
+                                    timer: q.timer,
+                                    point: q.point,
+                                    answers: [
+                                        { value: q.answer1 },
+                                        { value: q.answer2 },
+                                        { value: q.answer3 },
+                                        { value: q.answer4 }
+                                    ]
+                                };
+                            });
+                        }
+                    }
+                });
+
+            } else {
+                alert('no education id specfied');
+                document.location = '/Teacher/SelectEdu';
+            }
+        }
+
+    });
+
+
+
+
+</script>
+

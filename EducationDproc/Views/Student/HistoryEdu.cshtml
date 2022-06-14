@@ -1,0 +1,180 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+<link rel="stylesheet" href="~/css/Student/HistoryEdu.css" />
+
+<div class="edu-container" id="StudentHistoryEdu">
+
+    <div class="NewEducationEmpti d-flex justify-content-center align-items-center mx-0">
+        <h1 class="h1">{{ls.tr('testHistory')}}</h1>
+    </div>
+    <div class="containerSelection d-flex align-items-center">
+        <!--Select Class-->
+        <div class="edu-sel containerClass">
+            <select class="edu-select" name="" id="OptSelectClass" v-model="classNumber">
+                <option value="" disabled>{{ls.tr('selectClass')}}</option>
+                <option value="1">{{ls.tr('class')}} 1</option>
+                <option value="2">{{ls.tr('class')}} 2</option>
+                <option value="3">{{ls.tr('class')}} 3</option>
+                <option value="4">{{ls.tr('class')}} 4</option>
+                <option value="5">{{ls.tr('class')}} 5</option>
+                <option value="6">{{ls.tr('class')}} 6</option>
+                <option value="7">{{ls.tr('class')}} 7</option>
+                <option value="8">{{ls.tr('class')}} 8</option>
+                <option value="9">{{ls.tr('class')}} 9</option>
+                <option value="10">{{ls.tr('class')}} 10</option>
+                <option value="11">{{ls.tr('class')}} 11</option>
+                <option value="12">{{ls.tr('class')}} 12</option>
+            </select>
+        </div>
+        <!--Select Item-->
+        <div class="edu-sel containerItem">
+            <select class="edu-select" name="" id="OptSelectItem" v-model="subjectID">
+                <option value="" disabled>{{ls.tr('selectSubject')}}</option>
+                <option v-for="s in classSubjects.find((item) => { return item.classNumber == classNumber })?.subjects" v-bind:value="s.id">{{s.name}}</option>
+            </select>
+        </div>
+
+        <!--buttons-->
+        <button class="button new" v-on:click="GetEdus()">{{ls.tr('filter')}}</button>  <!-- onclick="document.location='/AuthorNewEdu/Index'" v-if="paragraph == ''" -->
+
+    </div><!--Selection-->
+    <template v-if="testings != null">
+        <div class="testings-result text-white d-flex justify-content-center" v-if="testings.length > 0">
+            <table border="1">
+                <tr>
+                    <th class="text-center px-2 py-1">{{ls.tr('testingDate')}}</th>
+                    @*<th class="text-center">classNumber</th>
+                        <th class="text-center">subject</th>*@
+                <th class="text-center px-2 py-1">{{ls.tr('paragraph')}}</th>
+                    @*<th class="text-center px-2 py-1">description</th>*@
+
+                    @*<th>isTrueCount</th>
+                        <th>isFalseCount</th>
+                        <th>isNoneCount</th>*@
+                    @*<th class="text-center">Points</th>*@
+                    @*<th>resultPoint</th>
+                        <th>maxPoint</th>*@
+                <th class="text-center px-2 py-1">{{ls.tr('assessment')}}</th>
+
+                    <th></th>
+                </tr>
+                <tr v-for="t in testings">
+                    <td class="text-center px-2 py-1">{{t.testingDate}}</td>
+                    @*<td class="text-center">{{t.classNumber}}</td>
+                        <td class="text-center">{{t.subjectID}}</td>*@
+                    <td class="text-center px-2 py-1">{{t.paragraph}}</td>
+                    @*<td class="text-center px-2 py-1">{{t.description}}</td>*@
+
+                    @*<td>{{t.isTrueCount}}</td>
+                        <td>{{t.isFalseCount}}</td>
+                        <td>{{t.isNoneCount}}</td>*@
+                    @*<td class="text-center">{{t.resultPoint}} / {{t.maxPoint}}</td>*@
+                    @*<td>{{t.maxPoint}}</td>*@
+                    <td class="text-center px-2 py-1">{{t.resultPoint * 10 / t.maxPoint}}</td>
+
+                    <td class="text-center px-2 py-1"><button v-on:click="goToFinishPage(t.testingID)">{{ls.tr('see')}}</button></td>
+                </tr>
+            </table>
+        </div>
+        <div v-else>
+            <h3 class="text-center text-white">{{ls.tr('noResults')}}</h3>
+        </div>
+    </template>
+    <template v-else>
+        <h3 class="text-center text-white">{{ls.tr('selectClassAndSubject')}}</h3>
+    </template>
+</div>
+
+<script src="~/js/subjects.js" asp-append-version="true"></script> @*// stanal dproci bolor ararkaner@@ sharac @@st dasaranneri*@
+<script>
+
+    // nor edu lracnelu vuejs n e;
+
+    var app = new Vue({
+        el: "#StudentHistoryEdu",
+        data: {
+            classSubjects: subjects.classSubjects, //
+            classNumber: '1',
+            subjectID: '',
+            //paragraph: '',
+            testings: null,
+            sharedState: langStore.state,
+
+            //isEduStarted: 0,
+            //testEdusID: null,
+            ls: langStore,
+        },
+        methods: {
+            goToFinishPage: function (testingID) {
+                document.location = `/Student/Finish/${testingID}`;
+            },
+            GetEdus: function () {
+
+                //if (!!this.classNumber && !!this.subjectID) {
+                    axios({
+                        method: 'post',
+                        url: '/Student/GetEdusHistory',
+                        params: {
+                            classNumber: this.classNumber,
+                            subjectID: this.subjectID,
+                        }
+                    }).then((r) => {
+                        console.log(r);
+                        console.log(r.data);
+                        if (r.data == 'notLoggedIn') {
+                            document.location = '/Student/SignupLogin';
+                        } else {
+                            this.testings = r.data.map((t) => {
+                                return {
+                                    ...t,
+                                    testingDate: t.testingDate.substring(0, 10)
+                                }
+                            });
+
+                            //this.testings = [{ paragraph: 'p1' }, { paragraph: 'p2' }];
+                        }
+                    });
+                //}
+
+            },
+            //startTestEdu: function () {
+            //    axios({
+            //        method: 'get',
+            //        url: '/StudentsEduCopyAuthor/CreateTestEduPassword',
+            //        params: {
+            //            id: this.paragraph
+            //        }
+            //    }).then((response) => {
+            //        console.log(response.data);
+            //        document.location = `/StudentsEduCopyAuthor/Index/${response.data.testingID}`;
+            //    });
+            //}
+        },
+        //startTestEdu: function () {
+        //    axios({
+        //        method: 'get',
+        //        url: '/StudentsEduCopyAuthor/CreateTestEduPassword',
+        //        params: {
+        //            id: this.testEdusID
+        //        }
+        //    }).then((response) => {
+        //        console.log(response.data);
+        //        this.isEduStarted = response.data.isEduStarted;
+
+        //        document.location = `/StudentsEduCopyAuthor/Index/${this.id}`;
+        //    });
+        //},
+        async created() {
+
+
+        }
+
+    });
+
+</script>

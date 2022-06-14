@@ -1,0 +1,182 @@
+﻿/** {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}*/
+
+body {
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url(https://mymodernmet.com/wp/wp-content/uploads/2020/04/free-zoom-background-0.jpg);*/
+    /*  background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/bg.jpg');*/
+    background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../../img/Alex1.jpg'); /*Alex*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla2.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla3.jpg');*/
+    /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla4.jpg');*/
+    /*background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla5.jpg');*/
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.edu-container {
+    /* yntanur guynn e */
+    width: 100%;
+    height: 100%;
+    font-family: sans-serif;
+    /* background: rgb(187,187,245);*/
+    color: #fff;
+    /* flexov berum e centron */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   /* background-image: linear-gradient(rgba(121,75,172,0.8),rgba(0,0,100,0.75)), url('../img/Alla3.jpg');*/
+}
+/* laynutyun barcrutyun ev tapancikutyunn e */
+
+.edu-card {
+    width: 600px;
+    height: 880px;
+    /* box-shadow: 0 0 40px 20px rgba(0,0,0,0.26);*/
+    perspective: 1000px;
+    border-radius: 10px;
+}
+
+.inner-box {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    border-radius: 20px;
+    width: 100%;
+    height: auto;
+    background: rgba(220, 162, 247, 0.3);
+    text-align: center;
+    font-family: arial;
+    color: rgb(238, 226, 243);
+}
+
+
+.inner-box .h1 {
+    font-size: 40px;
+}
+
+
+
+#rendBox {
+    width: 250px;
+    height: 50px;
+    /*background: rgba(162, 102, 211, 0.6);*/
+    margin-left: 30%;
+    padding: 10px;
+    border-radius: 33px;
+}
+
+
+#All-password[type=text] {
+    color: white;
+    font-size: 40px;
+    background: rgba(188, 122, 255, 0.35);
+    display: inline-block;
+    width: 250px;
+    height: 50px;
+    text-align: center;
+    border-radius: 33px;
+    border: 3px solid rgb(0,0,0, 0.0);
+}
+
+    #All-password::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: white;
+        opacity: 1; /* Firefox */
+    }
+
+#timeDown {
+    color: rgb(253, 253, 24, 0.8);
+    margin-left: 45%;
+    font-size: 30px;
+}
+
+.question {
+    background-color: rgba(247, 246, 248, 0.25);
+    margin: 30px;
+    height: 150px;
+    border-radius: 30px;
+    text-align: center;
+    font-size: 30px;
+}
+
+ 
+
+.answer-bloc {
+    /*background: rgb(32, 116, 185);*/
+    margin: 30px;
+    height: 200px;
+}
+
+.answers {
+    display: flex;
+  /*  flex-flow: column wrap;*/
+    flex-flow: row wrap;
+    height: 100%;
+}
+
+.answer-item {
+    width: 250px;
+    height: 40%;
+    margin: 10px;
+    border-radius: 30px;
+    background-color: rgba(188, 122, 255, 0.6);
+    color: white;
+    font-size: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+input[type=checkbox], input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+    display: none;
+}
+
+.answer-item.active, .answer-item:hover {
+    background: rgba(217, 103, 252, 0.85);
+    box-shadow: 0 0 30px 10px rgba(142,98,210, 0.2);
+}
+
+.ok[type=button] {
+    background: rgb(68, 228, 193, 0.4);
+    width: 200px;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    margin-left: 25px;
+    margin-top: 40px;
+    font-size: 30px;
+    border-radius: 30px;
+    border: 3px solid rgb(0,0,0, 0.0);
+}
+
+    .ok:hover {
+        background: rgba(128, 181, 250, 0.75);
+        box-shadow: 0 0 30px 10px rgba(97, 161, 245, 0.25);
+    }
+
+    .namak{
+        font-size: 25px;
+        text-align: center;
+        color: yellow;
+    }

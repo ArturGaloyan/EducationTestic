@@ -1,0 +1,261 @@
+﻿
+.edu-container {
+    margin-top: 35px;
+    display: flex;
+    flex-flow: row wrap;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    .edu-container > * {
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+.NewEducationEmpti {
+    background: rgba(202, 153, 252, 0.4);
+    margin-bottom: 30px;
+    font-size: 25px;
+    padding-bottom: 16px;
+    color: rgb(223, 190, 245);
+    border-radius: 15px;
+}
+
+.edu-headding {
+    width: 100%;
+}
+
+.sidebar-left {
+    width: 30%;
+}
+
+.sticky-block {
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar-right {
+    width: 70%;
+}
+
+.questionAndAnswersBoxesContainer {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.questionAndAnswersBox {
+    text-align: center;
+    background: rgba(254, 253, 255, 0.1);
+    /*min-height: 500px;*/
+    font-size: 24px;
+    padding-bottom: 25px;
+    margin-bottom: 16px;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.h6 {
+    color: white;
+}
+
+.scoreboard {
+    background-color: rgb(147, 112, 218, 0.2);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.question {
+    height: auto;
+    /*width: 99%;*/
+    text-align: center;
+    font-size: 20px;
+    background-color: rgba(247, 246, 248, 0.25);
+    border-radius: 10px;
+    color: white;
+}
+
+    .question::-webkit-input-placeholder {
+        color: white;
+    }
+
+.answers {
+    display: flex;
+    flex-flow: row wrap;
+    background: rgba(224, 174, 253, 0.2);
+    align-items: center;
+    border-radius: 20px;
+    margin-top: 5px;
+}
+
+.answer {
+    width: 50%;
+    margin-top: 15px;
+    color: rgb(182, 115, 248);
+    padding-bottom: 16px;
+}
+
+.edu-input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -13px;
+    left: 0px;
+    position: relative;
+    background-color: rgb(162, 70, 255);
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+.answer > .edu-input {
+    width: 90%;
+    height: 70px;
+    background: rgba(208, 170, 248, 0.6);
+    border-radius: 10px;
+    font-size: 18px;
+    color: white;
+}
+
+.edu-label {
+    color: rgb(228, 209, 248);
+}
+
+.selections-container {
+    display: flex;
+}
+
+.containerSelection {
+    display: flex;
+    flex-direction: column;
+    background: rgba(249, 247, 250, 0.2);
+    border-radius: 15px;
+}
+
+.edu-sel {
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 8px;
+    /* background: rgba(242, 238, 245, 0.3);*/
+}
+
+.edu-select {
+    width: 90%;
+    height: 50px;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: rgba(188, 122, 255, 0.8);
+    color: white;
+    font-size: 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(176, 100, 253, 0.4);
+    height: 80px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.button {
+    height: 80%;
+    width: 20%;
+    margin-left: 5%;
+    margin-top: 0.9%;
+    margin-right: 0.5%;
+    border-radius: 30px;
+    font-size: 20px;
+    text-align: border;
+}
+
+.buttons .countdown {
+    background: rgba(202, 153, 252, 0.4);
+    color: white;
+}
+
+#countdown {
+    color: w;
+    font-size: 40px;
+    color: rgb(255, 255, 255, 0.7);
+}
+
+.buttons .add {
+    background-color: rgb(97, 161, 245, 0.4);
+    color: white;
+}
+
+    .buttons .add:hover {
+        background: rgba(128, 181, 250, 0.75);
+        box-shadow: 0 0 30px 10px rgba(97, 161, 245, 0.25);
+    }
+
+.buttons .save {
+    background: rgba(155, 255, 40, 0.4);
+    color: white;
+}
+
+    .buttons .save:hover {
+        background: rgba(155, 255, 40, 0.55);
+        box-shadow: 0 0 30px 10px rgba(173, 250, 190, 0.2);
+    }
+
+.buttons .start {
+    background: rgba(250, 79, 207, 0.4);
+    color: white;
+}
+
+    .buttons .start:hover {
+        background: rgba(217, 103, 252, 0.85);
+        box-shadow: 0 0 30px 10px rgba(222, 173, 250, 0.2);
+    }
+
+@media all and (min-width: 800px) {
+    .questionAndAnswersBox {
+        flex: 3;
+    }
+
+    .containerSelection {
+        order: 1;
+    }
+    /*
+    .aside2{
+        order: 2;
+    }
+    */
+    .questionAndAnswersBox {
+        order: 2;
+    }
+
+    .buttons {
+        order: 4;
+    }
+}
+
+@media all and (min-width: 600px) {
+    .containerSelection {
+        flex: 1;
+    }
+}
+
+
+
+@media screen and (max-width: 800px) {
+    .sidebar-left,
+    .sidebar-right {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .answer {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+

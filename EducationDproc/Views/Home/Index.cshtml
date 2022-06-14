@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="~/css/StartEdu.css" />
+
+<div id="app">
+    <h1 class="h1" id="edu-span-h1">
+        <span class="edu-span">
+            <span class="logo">
+                <b>T</b>
+                <b>E</b>
+                <b>S</b>
+                <b>T</b>
+                <b>I</b>
+                <b>C</b>
+            </span>
+        </span>
+    </h1>
+    <div id="edu-container" class="edu-container d-none"> home page content </div>
+</div>
+
+<script>
+    document.getElementById('edu-span-h1').classList.add("start-anim");
+    //var appMenu = new Vue({
+    //    el: "#app",
+    //    data: {
+    //        ls: langStore, // translation
+    //    },
+    //    watch: {
+           
+    //        'ls.state.lang': function (newType) {
+    //            document.getElementById('edu-span-h1').classList.remove("start-anim");
+    //            document.getElementById('edu-span-h1').classList.add("start-anim");
+    //        },
+            
+    //    },
+    //    methods: {
+
+            
+    //    },
+
+    //    async created() {
+           
+    //    },
+
+    //});
+    //setTimeout(function () {
+    //    //document.getElementById('edu-span-h1').classList.add("d-none");
+    //    //document.getElementById('edu-container').classList.remove("d-none");
+
+    //    document.getElementsByTagName('body')[0].classList.add("anim-ended");
+
+    //}, 7000);
+
+
+    var card = document.getElementById("card");
+    var front = document.getElementById("front");
+</script>
+
+@*<script src="~/js/subjectsDefault.js" asp-append-version="true"></script>*@ 

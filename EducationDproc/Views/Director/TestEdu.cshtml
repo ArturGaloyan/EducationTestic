@@ -1,0 +1,146 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<link rel="stylesheet" href="~/css/Director/TestEdu.css" />
+
+<div class="edu-container d-block container-fluid" id="TeacherEduList">
+
+    <div class="edu-headding"></div>
+    <div class="row">
+        <div class="col-3">
+            <div class="sticky-block">
+                <div class="NewEducationEmpti py-3">
+                    <h1>{{ls.tr('testEducation')}}</h1>
+                </div>
+                <div class="containerSelection py-3">
+                    <h2 class="text-white mb-3">{{teacher?.name}} {{teacher?.surname}}</h2>
+                    <div class="text-white h4 mb-3">
+                        {{ls.tr('class')}} {{classNumber}}
+                    </div>
+                    <div class="text-white h4 mb-3">
+                        {{subjects.subjects.find((item) => item.id == subjectID)?.name}}
+                    </div>
+                    <div class="text-white h4">
+                        {{paragraph}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="questionAndAnswersBox row mb-4 border border-white" v-for="(question, key) in questions">
+                <div class="col-8 d-flex align-items-start">
+                    <h4 class="px-3 py-2 text-white">{{key + 1}}</h4>
+                    <div class="flex-grow-1">
+                        <div class="scoreboard">
+                            <div class="edu-input question py-3">{{question.question}}</div>
+                        </div>
+
+                        <div class="scoreboard p-4 mt-3 d-inline-block">
+                            <span class="question text-white py-2 px-3 mr-5">{{ls.tr('timer')}}: {{question.timer}}</span>
+                            <span class="question text-white py-2 px-3 ml-5">{{ls.tr('point')}}: {{question.point}}</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-4 d-flex flex-column">
+                    <div class="btn text-white py-2 mb-3" v-bind:class="[{'btn-success': j == question.trueAnswer}, {'btn-pink': j != question.trueAnswer}]" v-for="(answer, j) in question.answers">
+                       {{answer.value}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--container-->
+
+<script src="~/js/subjects.js" asp-append-version="true"></script> @*// stanal dproci bolor ararkaner@@ sharac @@st dasaranneri*@
+<script>
+
+    // nor edu lracnelu vuejs n e;
+
+    var app = new Vue({
+        el: "#TeacherEduList",
+        data: {
+            classSubjects: subjects.classSubjects, //
+            isEduStarted: 0,
+            id: null,
+            classNumber: '',
+            subjectID: '',
+            paragraph: '',
+            teacherID: null,
+            teacher: null,
+
+            testingID: null, // im avelacracn e Directori hamar
+            schoolID: null,  // im avelacracn e Directori hamar
+
+            questions: [
+
+            ],
+            sharedState: langStore.state,
+            ls: langStore,
+        },
+     
+         created() {
+           
+            this.id = window.location.pathname.split('/')[3];
+            if (!!this.id) {
+                //select testedu
+                console.log(this.id);
+                axios({
+                    method: 'post',
+                    url: '/Director/GetTestEdu', // poxel em Teacher -> Director
+                    params: {
+                        id: this.id,
+                    }
+                }).then((r) => {
+                    console.log(r, r.data);
+                    if (r.data == 'notLoggedIn') {
+                        document.location = '/Director/SignupLogin'; // poxel em Teacher -> Director
+                    } else {
+
+                        if (r.data.testEdus.length > 0) {
+
+                            this.isEduStarted = r.data.testEdus[0].isEduStarted;// ardyoq ogtagorcvac e te voch?
+
+                            this.classNumber = r.data.testEdus[0].classNumber;
+                            this.subjectID = r.data.testEdus[0].subjectID;
+                            this.paragraph = r.data.testEdus[0].paragraph;
+                            this.teacherID = r.data.testEdus[0].teacherID;
+                            this.teacher = r.data.teacher;
+
+
+                            this.questions = r.data.questions.map((q) => {
+                                return {
+                                    question: q.question,
+                                    trueAnswer: q.trueAnswer,
+                                    timer: q.timer,
+                                    point: q.point,
+                                    answers: [
+                                        { value: q.answer1 },
+                                        { value: q.answer2 },
+                                        { value: q.answer3 },
+                                        { value: q.answer4 }
+                                    ]
+                                };
+                            });
+                        }
+                    }
+                });
+
+            } else {
+                alert('no education id specfied');
+                document.location = '/Director/HistoryEdu'; // poxel em Teacher -> Director
+            }
+        }
+
+    });
+
+
+
+
+</script>
+

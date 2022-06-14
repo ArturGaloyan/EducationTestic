@@ -1,0 +1,307 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<link rel="stylesheet" href="~/css/Student/Edu.css" />
+
+<div class="edu-container" id="question-container">
+
+    <div class="edu-card">
+        <div class="inner-box py-3" id="card">
+            <template v-if="testEdu == null">
+                <h1 class="h1">{{ls.tr('enterPassword')}}</h1>
+            </template>
+            <template v-else>
+                <h1 class="h1 mb-3">{{subjects.subjects.find((item) => item.id == testEdu.subjectID)?.name}}</h1>
+                <h2 class="text-white text-center">{{testEdu.paragraph}}</h2>
+            </template>
+        </div>
+
+        <div v-if="orderStart">
+            <div v-if="currentQuestion != null">
+
+                <span id="timeDown">{{timeText}}</span>
+                <div class="text-warning text-center h3" v-bind:class="{'d-none': trueAnswer!=null}">Harc {{currentQuestionIndex + 1 }}</div>
+                <div class="question" name="question">{{ currentQuestion.question }}</div>
+
+
+                <div class="answer-bloc">
+
+                    <div class="answers w-100 " v-bind:class="{'align-items-center': trueAnswer!=null}">
+                        <label v-for="(q, i) in currentQuestion.answers" class="answer-item" v-bind:class="[{'bg-success w-100 h-75': trueAnswer == i }, {'d-none': trueAnswer!=null && trueAnswer != i }, {'active': selectedAnswer == i }]">
+                            <input type="radio" v-model="selectedAnswer" v-bind:value="i" />
+                            {{q.value}}
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div id="rendBox" v-else>
+            <p v-model="namak" class="namak">{{ ls.tr(namak) }}</p>
+
+            <input name="testPassword" id="All-password" type="text" v-bind:placeholder="ls.tr('password')" v-model="testPassword" />
+            <input type="button" class="ok" v-bind:value="ls.tr('ok')" v-on:click="passwordOrder()" />
+        </div>
+
+    </div>
+
+</div>
+
+<script src="~/js/subjects.js" asp-append-version="true"></script> @*// stanal dproci bolor ararkaner@@ sharac @@st dasaranneri*@
+<script>
+    let app = new Vue({
+        el: "#question-container",
+        data: {
+            timer: 100,
+            time: 300,
+            timeText: '',
+            timerInterval: 0,
+
+
+            selectedAnswer: -1,
+
+            orderStart: false,
+            testEdu: null,
+            testEduID: null,
+            testPassword: "",
+            namak: "",
+
+            currentQuestion: null,
+            currentQuestionIndex: null,
+
+            trueAnswer: null,
+            tests: [],
+
+            answers: [],
+            testingID: null,
+            ls: langStore,
+        },
+        methods: {
+
+            /**
+
+             */
+
+            Start: function () {
+
+                this.currentQuestion = this.tests[0];
+                this.currentQuestionIndex = 0;
+                clearInterval(this.timerInterval);
+                this.timer = this.currentQuestion.timer;
+                this.startTimer();
+            },
+
+            startTimer: function () {
+
+                this.time = this.timer;
+                let self = this;
+                this.timerInterval = setInterval(function () {
+
+                    self.time = self.time - 1;
+                    let s = self.time % 60;
+                    let m = (self.time - s) / 60;
+                    if (s < 10)
+                        s = '0' + s;
+                    if (m < 10)
+                        m = '0' + m;
+                    self.timeText = `${m}:${s}`;
+                    if (self.time <= 0) {
+                        clearInterval(self.timerInterval);
+                        self.nextQuestion();
+                    }
+                }, 1000);
+            },
+
+            nextQuestion: function () {
+                let self = this;
+                setTimeout(function () {
+                    let newAnswer = {
+                        answer: self.selectedAnswer,
+                        isTrue: self.selectedAnswer == self.currentQuestion.trueAnswer ? 1 : 0,
+                        point: self.currentQuestion.point,
+                        questionID: self.currentQuestion.id,
+                        testingID: self.testingID
+                    };
+                    self.answers.push(newAnswer);
+
+
+                    self.showTrueAnswer();
+                    setTimeout(function () {
+                        self.trueAnswer = null;
+                        self.currentQuestionIndex += 1;
+                        // if (self.currentQuestionIndex >= self.tests.length) {
+                        if (self.currentQuestionIndex >= self.tests.length) {
+                            self.finishEdu();
+                        } else {
+                            self.currentQuestion = self.tests[self.currentQuestionIndex];
+                            self.timer = self.currentQuestion.timer;
+                            self.startTimer();
+                            self.selectedAnswer = -1;
+                        }
+                    }, 7000);
+                }, 3000);
+            },
+
+            showTrueAnswer: function () {
+                this.trueAnswer = this.currentQuestion.trueAnswer;
+                console.log(this.trueAnswer);
+            },
+
+            finishEdu: function () {
+                //finish test
+                //uxarkel c# this.answers
+                console.log('finish');
+                if (this.answers.length > 0) {
+                    let isTrueCount = 0;
+                    let isFalseCount = 0;
+                    let isNoneCount = 0;
+                    let resultPoint = 0;
+                    let maxPoint = 0;
+
+                    this.answers.forEach((answer) => {
+                        maxPoint += answer.point //
+                        if (answer.isTrue === 1) {
+                            isTrueCount++; //
+                            resultPoint += answer.point; //
+                        } else {
+                            if (answer.answer > -1) { // ete y@ntrel e patasxan, bayc sxal
+                                isFalseCount++; //
+                            } else { // ete chi y@ntrel patasxan
+                                isNoneCount++; //
+                            }
+                        }
+
+                        axios({
+                            method: 'post',
+                            url: '/Student/SaveStudentsAnswers',
+                            params: {
+                                //"newAnswer": answer
+                                ...answer
+                            }
+                        }).then((r) => {
+                            console.log(r.data);
+
+                        });
+                    });
+
+                    // add code for save in testingResults table
+
+                    axios({
+                        method: 'post',
+                        url: '/Student/SaveTestingResult',// ?
+                        params: {
+                            isTrueCount: isTrueCount,
+                            isFalseCount: isFalseCount,
+                            isNoneCount: isNoneCount,
+                            resultPoint: resultPoint,
+                            maxPoint: maxPoint,
+                            testingID: this.testingID,
+                        }
+                    }).then((r) => {
+                        console.log(r.data);
+                        document.location = `/Student/Finish/${this.testingID}`;// ?
+                    });
+
+
+                }
+
+            },
+
+            passwordOrder: function () {
+                axios({
+                    method: 'get',
+                    url: '/Student/OrderPassword',
+                    params: {
+                        "testPassword": this.testPassword
+                    }
+                }).then((r) => {
+                    console.log(r);
+
+                    if (r.data == "wrongPassword") {
+                        this.namak = r.data;
+                        this.testEdu = null;
+                    }
+
+                    if (r.data == "notLoggedIn") {
+                        this.namak = r.data;
+                        this.testEdu = null;
+                        //redirect to login
+                    }
+                    if (r.data.questions !== undefined) {
+                        this.testEdu = r.data.testEdu;
+                        this.testEduID = r.data.testEdu.id;
+                        this.testingID = r.data.testing.id;
+                        this.tests = r.data.questions.map((q) => {
+                            console.log(q);
+                            return {
+                                id: q.id,
+                                question: q.question,
+                                trueAnswer: q.trueAnswer,
+                                timer: q.timer,
+                                point: q.point,
+                                answers: [
+                                    { value: q.answer1 },
+                                    { value: q.answer2 },
+                                    { value: q.answer3 },
+                                    { value: q.answer4 }
+                                ]
+                            };
+                        });
+
+                        this.namak = 'waitUntilStart';
+                        this.getTestStarter();
+                    }
+                });
+            },
+
+            getTestStarter: function () {
+                axios({
+                    method: 'get',
+                    url: '/Student/OrderStrarter',
+                    params: {
+                        "id": this.testEduID
+                    }
+                }).then((r) => {
+                    console.log(r.data);
+                    if (r.data.started == 1) {
+                        this.orderStart = 1;
+                        this.Start();
+                    } else {
+                        this.getTestStarter(); // anverj cikli
+                    }
+
+                });
+            },
+
+            //startTestEdu: function () {
+
+            //    if (this.orderStart == true) {
+            //        this.Start();
+            //    }
+            //}
+
+        },
+
+        created: function () {
+
+            //if (this.namak == "spaseq testi harcerin") {
+            //    this.getTest();
+            //}
+
+
+            //this.startTimer();
+
+            // axios.get("/posts/getmyposts")
+            //     .then(r => {
+            //         console.log(r.data)
+            //         this.photos = r.data;
+            //     })
+        }
+
+    })
+</script>
